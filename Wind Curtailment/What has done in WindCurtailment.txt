@@ -1,0 +1,3 @@
+Copy Pasted the data from http://apps.aptransco.co.in/sldcreports/forms/BackDownWind.aspx for the dates from 24-09-2019 to 31-12-2019
+Converted the date column to the TEXT Data
+Ran program cleanwinddata.py to get Blockwise data
