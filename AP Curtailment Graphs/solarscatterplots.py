@@ -15,9 +15,9 @@ def freqinrange(row):
         return False
 
 plt.style.use('seaborn')
-df = pd.read_excel('windcurtailment.xlsx')
+df = pd.read_excel('solarcurtailment.xlsx')
 
-with PdfPages('AP_Wind_Curtailment1.pdf') as pdf:
+with PdfPages('AP_Solar_Curtailment.pdf') as pdf:
 
 #############  Plot with Frequency in range points and out range points #####################################################
     rcParams['figure.figsize'] = 18, 12
@@ -25,9 +25,9 @@ with PdfPages('AP_Wind_Curtailment1.pdf') as pdf:
     freqlessband = df[df['Frequency'] < 49.9]
     frqgreatband = df[df['Frequency'] > 50.05]
     fig, ax = plt.subplots()
-    plt.scatter(freqinrangedf['Curtailment'],freqinrangedf['Deviation'],marker = '.',label='Frequency in range 49.90 to 50.05',s=140)
-    plt.scatter(freqlessband['Curtailment'],freqlessband['Deviation'],marker = 'x',c = sns.xkcd_rgb["pale red"],label='Grid Frequency Less than 49.90',s=140)
-    plt.scatter(frqgreatband['Curtailment'],frqgreatband['Deviation'],marker = '+',c = sns.xkcd_rgb["orange"],label='Grid Frequency Greater than 50.05',s=140)
+    plt.scatter(freqinrangedf['Curtailment'],freqinrangedf['Deviation'],label='Frequency in range 49.95 to 50.05')
+    plt.scatter(freqlessband['Curtailment'],freqlessband['Deviation'],c = sns.xkcd_rgb["pale red"],label='Grid Frequency Less than 49.9')
+    plt.scatter(frqgreatband['Curtailment'],frqgreatband['Deviation'],c = sns.xkcd_rgb["pale orange"],label='Grid Frequency Greater than 50.05')
     ax.xaxis.set_major_locator(MultipleLocator(50))
     ax.xaxis.set_minor_locator(MultipleLocator(25))
     ax.xaxis.grid(True, which='minor')
@@ -54,7 +54,7 @@ with PdfPages('AP_Wind_Curtailment1.pdf') as pdf:
     frqgreatband = df[df['Frequency'] >= 50.0]
     frqlessband = df[df['Frequency'] < 50.0]
     plt.scatter(frqgreatband['Curtailment'],frqgreatband['Deviation'],label='Grid Frequency Greater than 50.0 Hz')
-    plt.scatter(frqlessband['Curtailment'],frqlessband['Deviation'],marker = 'x',s=100,c = sns.xkcd_rgb["pale red"],label='Grid Frequency Less than 50.0 Hz')
+    plt.scatter(frqlessband['Curtailment'],frqlessband['Deviation'],c = sns.xkcd_rgb["pale red"],label='Grid Frequency Less than 50.0 Hz')
 
 
     ax.xaxis.set_major_locator(MultipleLocator(50))

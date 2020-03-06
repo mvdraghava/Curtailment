@@ -45,6 +45,19 @@ def contail_myal(row):
     else:
         return 0
 
+def contain_jam_myal(row):
+    sub_station = 'Jammalamadugu'
+    station = row['Remarks']
+    if sub_station.lower() in station.lower():
+        return row['Solar cutailment MW']
+    else:
+        sub_station = 'Mylavaram'
+        station = row['Remarks']
+        if sub_station.lower() in station.lower():
+            return row['Solar cutailment MW']
+        else:
+            return 0
+
 def contain_all(row):
     sub_station = 'Distributed stations'
     station = row['Remarks']
@@ -75,6 +88,11 @@ def color_negative_red(val):
     color = 'red' if val < 0 else 'black'
     return 'color: %s' % color
 
+def checkjammyla(row):
+    if row['Jammalamadugu'] != 0 or row['Mylavaram'] != 0:
+        return True
+    else:
+        return False
 
 start_dt = date(2019, 9, 24)
 end_dt = date(2019, 12, 31)
@@ -83,9 +101,10 @@ df = pd.read_excel('apsolarcurtailment.xlsx')
 df.rename(columns = {'Reasons for Backing down': 'Remarks'},inplace = True)
 df['Status']  = df['Remarks'].apply(get_status)
 df['Ghani'] = df.apply(contain_ghani,axis=1)
-df['Jammalamadugu'] = df.apply(contain_jam,axis=1)
+##df['Jammalamadugu'] = df.apply(contain_jam,axis=1)
 df['Talarichruvu'] = df.apply(contain_tala,axis=1)
-df['Mylavaram'] = df.apply(contail_myal,axis=1)
+##df['Mylavaram'] = df.apply(contail_myal,axis=1)
+df['Jammalamadugu(Mylavaram)'] = df.apply(contain_jam_myal , axis=1)
 df['All Stations'] = df.apply(contain_all,axis=1)
 ##df['Date'] =  pd.to_datetime(df['Date'], infer_datetime_format=True)
 df.style.apply(data_entry_problems,axis=1)
@@ -95,12 +114,14 @@ with pd.ExcelWriter('output.xlsx',engine='openpyxl') as writer:
     df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Data')
     sub_df = df[df['Ghani'] != 0]
     sub_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Ghani')
-    sub_df = df[df['Jammalamadugu'] != 0]
-    sub_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Jammalamadugu')
+##    jam_df = df[df['Jammalamadugu'] != 0]
+##    jam_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Jammalamadugu')
     sub_df = df[df['Talarichruvu'] != 0]
     sub_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Talarichruvu')
-    sub_df = df[df['Mylavaram'] != 0]
-    sub_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Mylavaram')
+##    myla_df = df[df['Mylavaram'] != 0]
+##    myla_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Mylavaram')
+    jam_myla_df = df[df['Jammalamadugu(Mylavaram)'] != 0]
+    jam_myla_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='Jammalamadugu(Mylavaram)')
     sub_df = df[df['All Stations'] != 0]
     sub_df.style.apply(data_entry_problems,axis=1).to_excel(writer, sheet_name='All Stations')
 
