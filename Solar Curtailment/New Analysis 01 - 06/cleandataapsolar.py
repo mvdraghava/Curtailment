@@ -94,8 +94,8 @@ def checkjammyla(row):
     else:
         return False
 
-start_dt = date(2019, 9, 24)
-end_dt = date(2019, 12, 31)
+start_dt = date(2020, 1, 1)
+end_dt = date(2020, 6, 30)
 date_list = [(start_dt + timedelta(n)).strftime('%d-%m-%Y') for n in range(int ((end_dt - start_dt).days)+1)]
 df = pd.read_excel('apsolarcurtailment_1.xlsx')
 df.rename(columns = {'Reasons for Backing down': 'Remarks'},inplace = True)
